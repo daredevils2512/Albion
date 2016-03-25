@@ -33,13 +33,12 @@ private:
 	//std::shared_ptr<CameraServer> server;
 	HSLImage *image;
 public:
-	enum activeCam{shooterEnable, intakeEnable};
 	VisionTracking();
 	void InitDefaultCommand();
 	Nullable<double> GetTargetX();
 	void cameraAuton();
 	void cameraTeleop();
-	void ToggleCamera(activeCam active);
+	void ToggleCamera(bool active);
 	void saveAxisImage();
 	void startUSBCamera();
 

@@ -64,8 +64,8 @@ void VisionTracking::cameraTeleop() {
 	camera->WriteColorLevel(50);
 }
 
-void VisionTracking::ToggleCamera(activeCam active) {
-	if (active == shooterEnable) {
+void VisionTracking::ToggleCamera(bool active) {
+	if (active) {
 		//server->SetSize(2);
 		//server->SetQuality(0);
 		camera->WriteMaxFPS(20);
