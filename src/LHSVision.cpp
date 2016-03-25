@@ -25,7 +25,6 @@ namespace CAMERA	//Camera Names
 //NOTE: Camera 1 is the default camera. Can toggle to 2 later.
 LHSVision::LHSVision() //Constructor
 {
-	printf("File %18s Date %s Time %s Object %p\n",__FILE__,__DATE__, __TIME__, this);
 
 	frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 	IMAQdxOpenCamera(CAMERA::CAM_ONE, IMAQdxCameraControlModeController, &session);
