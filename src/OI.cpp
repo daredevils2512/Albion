@@ -1,16 +1,14 @@
 #include "OI.h"
+#include "RobotMap.h"
 #include "Commands/_CMG_IntakeBall.h"
 #include "Commands/IntakeActuate.h"
 #include "Commands/IntakeSpeed.h"
 #include "Commands/_CMG_ShootBall.h"
 #include "Commands/_CMG_ShooterCharge.h"
-#include "Commands/ClimbWinchSpeed.h"
 #include "Commands/ShooterActuate.h"
 #include "Commands/ShooterSpeed.h"
-#include "Commands/ClimbHookSpeed.h"
 #include "Commands/ShooterManualSpeed.h"
 #include "Commands/IntakeManualSpeed.h"
-#include "Commands/DrivetrainTenPercent.h"
 OI::OI()
 {
 	// activates commands based on controller inputs
@@ -18,7 +16,6 @@ OI::OI()
 	DRC_rightBumper.WhenPressed(new IntakeActuate(true)); //intake up
 	DRC_leftBumper.WhenPressed(new IntakeActuate(false)); //intake down
 	DRC_a_Button.WhenPressed(new IntakeSpeed(0.0)); //stop intake
-	DRC_b_Button.WhileHeld(new DrivetrainTenPercent());
 
 	CDR_trigger.WhenPressed(new _CMG_ShootBall());//fire ball
 	CDR_sideJoystickButton.WhenPressed(new _CMG_ShooterCharge());//start revving up shooter
@@ -26,12 +23,6 @@ OI::OI()
 	CDR_topLeftJoystick.WhileHeld(new ShooterManualSpeed());//set shooter speed with throttle
 	CDR_bottomRightJoystick.WhenPressed(new ShooterActuate(false));
 	CDR_topRightJoystick.WhenPressed(new ShooterActuate(true));
-	CDR_bottomLeftBase.WhileHeld(new ClimbWinchSpeed(-1.0)); // rope in/robot up
-	CDR_bottomLeftBase.WhenReleased(new ClimbWinchSpeed(0.0));
-	CDR_topLeftBase.WhileHeld(new ClimbWinchSpeed(1.0)); // rope out/robot down
-	CDR_topLeftBase.WhenReleased(new ClimbWinchSpeed(0.0));
-	CDR_bottomMiddleBase.WhileHeld(new ClimbHookSpeed(-0.9)); //hook down
-	CDR_topMiddleBase.WhileHeld(new ClimbHookSpeed(0.7)); //hook up
 	CDR_bottomRightBase.WhenPressed(new IntakeActuate(false));
 	CDR_topRightBase.WhenPressed(new IntakeActuate(true));
 	CDR_joystickPOV.WhenPressed(new IntakeManualSpeed());
@@ -70,10 +61,10 @@ bool OI::InvertDriving() {
 	//driver left trigger is held
 	//also set controller to rumble, to inform driver controls are now inverted
 	if(DRC_leftTrigger.Get()) {
-		driverController.SetRumble(Joystick::kRightRumble, 1.0);
+		driverController.SetRumble(frc::Joystick::kRightRumble, 1.0);
 		return true;
 	}else{
-		driverController.SetRumble(Joystick::kRightRumble, 0.0);
+		driverController.SetRumble(frc::Joystick::kRightRumble, 0.0);
 		return false;
 	}
 }
@@ -89,4 +80,14 @@ bool OI::POVForward() {
 int OI::GetJoystickPOV() {
 	//accesses the POV hat value
 	return coDriverController.GetPOV();
+}
+
+bool OI::DriveNosKick() {
+	if(DRC_b_Button.Get()) {
+		RobotMap::drivetrainchassis->SetMaxOutput(2.0);
+		return true;
+	}else{
+		RobotMap::drivetrainchassis->SetMaxOutput(1.0);
+		return false;
+	}
 }
