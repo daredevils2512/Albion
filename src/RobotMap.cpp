@@ -18,8 +18,6 @@ std::shared_ptr<CANTalon> RobotMap::drivetrainRearLeftMotor;
 std::shared_ptr<CANTalon> RobotMap::drivetrainFrontRightMotor;
 std::shared_ptr<CANTalon> RobotMap::drivetrainRearRightMotor;
 std::shared_ptr<frc::RobotDrive> RobotMap::drivetrainchassis;
-std::shared_ptr<frc::Encoder> RobotMap::drivetrainLeftEncoder;
-std::shared_ptr<frc::Encoder> RobotMap::drivetrainRightEncoder;
 std::shared_ptr<frc::DoubleSolenoid> RobotMap::shooterSolenoid;
 std::shared_ptr<CANTalon> RobotMap::shooterMotor;
 std::shared_ptr<frc::DigitalInput> RobotMap::shooterPhotoeye;
@@ -32,17 +30,17 @@ void RobotMap::init() {
 	//assign ports and settings to pointer objects declared in RobotMap.h
     frc::LiveWindow *lw = frc::LiveWindow::GetInstance();
 
-    drivetrainFrontLeftMotor.reset(new CANTalon(4));
+    drivetrainFrontLeftMotor.reset(new CANTalon(5)); //good
     lw->AddActuator("Drivetrain", "FrontLeftMotor", drivetrainFrontLeftMotor);
     
-    drivetrainRearLeftMotor.reset(new CANTalon(6));
-    lw->AddActuator("Drivetrain", "RearLeftMotor", drivetrainRearLeftMotor);
+    drivetrainRearLeftMotor.reset(new CANTalon(2));
+    lw->AddActuator("Drivetrain", "RearLeftMotor", drivetrainRearLeftMotor); //good
     
-    drivetrainFrontRightMotor.reset(new CANTalon(0));
-    lw->AddActuator("Drivetrain", "FrontRightMotor", drivetrainFrontRightMotor);
+    drivetrainFrontRightMotor.reset(new CANTalon(4));
+    lw->AddActuator("Drivetrain", "FrontRightMotor", drivetrainFrontRightMotor); //good
     
-    drivetrainRearRightMotor.reset(new CANTalon(8));
-    lw->AddActuator("Drivetrain", "RearRightMotor", drivetrainRearRightMotor);
+    drivetrainRearRightMotor.reset(new CANTalon(7));
+    lw->AddActuator("Drivetrain", "RearRightMotor", drivetrainRearRightMotor); //good
     
     drivetrainchassis.reset(new frc::RobotDrive(drivetrainFrontLeftMotor, drivetrainRearLeftMotor,
               drivetrainFrontRightMotor, drivetrainRearRightMotor));
@@ -50,31 +48,21 @@ void RobotMap::init() {
     drivetrainchassis->SetSafetyEnabled(false);
         drivetrainchassis->SetExpiration(0.5);
         drivetrainchassis->SetSensitivity(0.5);
-        //drivetrainchassis->SetMaxOutput(0.65);
+        drivetrainchassis->SetMaxOutput(1.0);
 
+    shooterSolenoid.reset(new frc::DoubleSolenoid(1, 2, 3));
+    lw->AddActuator("Shooter", "Solenoid", shooterSolenoid); //good
 
-    drivetrainLeftEncoder.reset(new frc::Encoder(0, 1, false, frc::Encoder::k4X));
-    	lw->AddSensor("Drivetrain", "LeftEncoder", drivetrainLeftEncoder);
-    drivetrainLeftEncoder->SetDistancePerPulse(0.0153846154);
-    drivetrainLeftEncoder->SetPIDSourceType(frc::PIDSourceType::kRate);
-    drivetrainRightEncoder.reset(new frc::Encoder(2, 3, false, frc::Encoder::k4X));
-    	lw->AddSensor("Drivetrain", "RightEncoder", drivetrainRightEncoder);
-    drivetrainRightEncoder->SetDistancePerPulse(0.0153846154);
-    drivetrainRightEncoder->SetPIDSourceType(frc::PIDSourceType::kRate);
+    shooterMotor.reset(new CANTalon(9));
+    lw->AddActuator("Shooter", "Motor", shooterMotor); //good
 
-    shooterSolenoid.reset(new frc::DoubleSolenoid(1, 0, 1));
-        lw->AddActuator("Shooter", "Solenoid", shooterSolenoid);
+    shooterPhotoeye.reset(new frc::DigitalInput(4));
+    lw->AddSensor("Shooter", "Photoeye", shooterPhotoeye); //good
 
-        shooterMotor.reset(new CANTalon(9));
-        lw->AddActuator("Shooter", "Motor", shooterMotor);
+    intakeSolenoid.reset(new frc::DoubleSolenoid(1, 0, 1));
+    lw->AddActuator("Intake", "Solenoid", intakeSolenoid); //good
 
-        shooterPhotoeye.reset(new frc::DigitalInput(5));
-        lw->AddSensor("Shooter", "Photoeye", shooterPhotoeye);
-
-        intakeSolenoid.reset(new frc::DoubleSolenoid(1, 2, 3));
-        lw->AddActuator("Intake", "Solenoid", intakeSolenoid);
-
-        intakeMotor.reset(new CANTalon(3));
-        lw->AddActuator("Intake", "Motor", intakeMotor);
+    intakeMotor.reset(new CANTalon(8));
+    lw->AddActuator("Intake", "Motor", intakeMotor); //good
 
 }

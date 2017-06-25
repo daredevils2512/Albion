@@ -50,7 +50,6 @@ void Robot::AutonomousInit() {	//start autonomous
 	if (autonomousCommand.get() != nullptr)
 		autonomousCommand->Start();
 	//resets drivetrain encoders to zero
-	Robot::drivetrain->ResetEncoders();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -68,10 +67,14 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 	//print information to smartdashboard
-	frc::SmartDashboard::PutNumber("left encoder", RobotMap::drivetrainLeftEncoder->GetDistance());
-	frc::SmartDashboard::PutNumber("right encoder", RobotMap::drivetrainRightEncoder->GetDistance());
+	frc::SmartDashboard::PutBoolean("Nos status" , Robot::oi->DriveNosKick());
 	frc::SmartDashboard::PutBoolean("Ball in", RobotMap::shooterPhotoeye->Get());
-	frc::SmartDashboard::PutBoolean("nos status" , Robot::oi->DriveNosKick());
+	frc::SmartDashboard::PutNumber("front right current" , RobotMap::drivetrainFrontRightMotor->GetOutputCurrent());
+	frc::SmartDashboard::PutNumber("front left current" , RobotMap::drivetrainFrontLeftMotor->GetOutputCurrent());
+	frc::SmartDashboard::PutNumber("rear right current" , RobotMap::drivetrainRearRightMotor->GetOutputCurrent());
+	frc::SmartDashboard::PutNumber("rear left current" , RobotMap::drivetrainRearLeftMotor->GetOutputCurrent());
+
+
 }
 
 void Robot::TestPeriodic() {

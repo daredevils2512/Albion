@@ -23,7 +23,7 @@ void Intake::InitDefaultCommand() {
 
 void Intake::SetIntakeSpeed(double speed) {
 	//sets intake motor to speed specified
-	motor->Set(speed);
+	motor->Set(-speed);
 }
 
 void Intake::SetIntakeDirection(frc::DoubleSolenoid::Value dir) {

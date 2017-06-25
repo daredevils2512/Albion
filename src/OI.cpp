@@ -17,16 +17,16 @@ OI::OI()
 	DRC_leftBumper.WhenPressed(new IntakeActuate(false)); //intake down
 	DRC_a_Button.WhenPressed(new IntakeSpeed(0.0)); //stop intake
 
-	CDR_trigger.WhenPressed(new _CMG_ShootBall());//fire ball
-	CDR_sideJoystickButton.WhenPressed(new _CMG_ShooterCharge());//start revving up shooter
-	CDR_bottomLeftJoystick.WhileHeld(new ShooterSpeed(0.0, false));//stop shooter wheels
-	CDR_topLeftJoystick.WhileHeld(new ShooterManualSpeed());//set shooter speed with throttle
-	CDR_bottomRightJoystick.WhenPressed(new ShooterActuate(false));
-	CDR_topRightJoystick.WhenPressed(new ShooterActuate(true));
-	CDR_bottomRightBase.WhenPressed(new IntakeActuate(false));
-	CDR_topRightBase.WhenPressed(new IntakeActuate(true));
-	CDR_joystickPOV.WhenPressed(new IntakeManualSpeed());
-	CDR_joystickPOV.WhenReleased(new IntakeSpeed(0.0));
+	CDR_trigger.WhenPressed(new _CMG_ShootBall()); //fire ball
+	CDR_sideJoystickButton.WhenPressed(new _CMG_ShooterCharge()); //start revving up shooter
+	CDR_bottomLeftJoystick.WhileHeld(new ShooterSpeed(0.0, false)); //stop shooter wheels
+	CDR_topLeftJoystick.WhileHeld(new ShooterManualSpeed()); //set shooter speed with throttle
+	CDR_bottomRightJoystick.WhenPressed(new ShooterActuate(false)); //shooter down
+	CDR_topRightJoystick.WhenPressed(new ShooterActuate(true)); //shooter up
+	CDR_bottomRightBase.WhenPressed(new IntakeActuate(false)); //intake down
+	CDR_topRightBase.WhenPressed(new IntakeActuate(true)); //intake up
+	CDR_joystickPOV.WhenPressed(new IntakeManualSpeed()); //set intake speed with pov hat
+	CDR_joystickPOV.WhenReleased(new IntakeSpeed(0.0)); //stop intake with pov hat
 }
 
 
@@ -84,7 +84,7 @@ int OI::GetJoystickPOV() {
 
 bool OI::DriveNosKick() {
 	if(DRC_b_Button.Get()) {
-		RobotMap::drivetrainchassis->SetMaxOutput(2.0);
+		RobotMap::drivetrainchassis->SetMaxOutput(1.5);
 		return true;
 	}else{
 		RobotMap::drivetrainchassis->SetMaxOutput(1.0);
